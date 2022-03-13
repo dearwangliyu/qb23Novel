@@ -16,8 +16,8 @@ header = {
 def login():
 	address = '/login.php?do=submit'
 	param = {
-		'username' : '君若清路尘'.encode('GBK'),
-		'password': '111223',
+		'username' : 'username'.encode('GBK'),
+		'password': 'password',
 		'action' :  'login'
 	}
 	result = session.post(url+address,params=param,headers=header)
