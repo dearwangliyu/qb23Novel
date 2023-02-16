@@ -72,14 +72,14 @@ def download_book(dict,book_list):
 		mkdir(book_name)
 		line = 1
 		for book_volume in dict[book_name]:#遍历卷数
-			path_one = '%s\\%s'%(book_name,book_volume)
+			path_one = os.path.join(book_name, book_volume)
 			print(book_name,book_volume)
 			mkdir(path_one)
 			num = 1
 			all_title = []
 			for book_content in dict[book_name][book_volume]:#遍历各章节
-				path_two = '%s\\OEBPS\\Text'%(path_one)
-				path_xhtml = '%s\\chapter%d.xhtml'%(path_two,num)
+				path_two = os.path.join(path_one, 'OEBPS', 'Text')
+				path_xhtml = os.path.join(path_two, f'chapter{num}.xhtml')
 				mkdir(path_two)
 				p = get_main(book_content['url'])
 				title = ''.join(book_content['title'].split(' ')[1:])
@@ -100,12 +100,12 @@ def download_book(dict,book_list):
 				line_cover(float(f1[0]),'cover.jpg')
 			elif f2 != []:
 				line_cover(chinese_to_arabic(f2[0]), 'cover.jpg')
-			shutil.move('cover.jpg',f'{path_one}\\OEBPS\\Images\\cover.jpg')
-			with open(f'{path_one}\\OEBPS\\content.opf','w+',encoding="utf-8") as o:
+			shutil.move('cover.jpg',os.path.join(f'{path_one}', 'OEBPS', 'Images', 'cover.jpg'))
+			with open(os.path.join(f'{path_one}', 'OEBPS', 'content.opf'),'w+',encoding="utf-8") as o:
 				o.write(content(all_num,book_name,book_volume))
-			with open(f'{path_one}\\OEBPS\\toc.ncx','w+',encoding="utf-8") as o:
+			with open(os.path.join(f'{path_one}', 'OEBPS', 'toc.ncx'),'w+',encoding="utf-8") as o:
 				o.write(toc(all_num,all_title,book_name,book_volume))
-			with open(f'{path_one}\\OEBPS\\Text\\contents.xhtml','w+',encoding="utf-8") as c:
+			with open(os.path.join(f'{path_one}', 'OEBPS', 'Text', 'contents.xhtml'),'w+',encoding="utf-8") as c:
 				c.write(contents(all_num,all_title))
 			shutil.make_archive(path_one,'zip',path_one)
 			shutil.move(f'{path_one}.zip',f'{path_one}.epub')
